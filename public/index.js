@@ -22,7 +22,7 @@ const buildTemplate = (todo, ids) =>
       </button>
     </li>`;
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
   const display = document.getElementById('display');
   const form = document.getElementById('form');
   const todoUserInput = document.getElementById('todoUserInput');
@@ -32,11 +32,31 @@ document.addEventListener('DOMContentLoaded', function() {
     data.forEach(todo => {
       let ids = buildIDS(todo);
       content += buildTemplate(todo, ids);
-      // editTodo(todo, ids.todoId, ids.editID);
-      // deleteTodo(todo, ids.todoId, ids.deleteID);
+      // editTodo(todo, ids.todoID, ids.editID);
+      // deleteTodo(todo, ids.todoID, ids.deleteID);
     });
     display.innerHTML = content;
   };
+
+  form.onsubmit = event =>
+    event.preventDefault() ||
+    fetch('/', {
+      method: 'post',
+      body: JSON.stringify({ todo: todoUserInput.value }),
+      headers: {
+        'Content-Type': 'application/json; chatser=utf-8'
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.result.ok == 1 && data.result.n == 1) {
+          let ids = buildIDS(data.document);
+          display.innerHTML += buildTemplate(data.document, ids);
+          // editTodo(data.document, ids.todoID, ids.editID);
+          // deleteTodo(data.document, ids.todoID, ids.deleteID);
+        }
+        resetInput(todoUserInput);
+      });
 
   const getTodos = () =>
     fetch('/todos', { method: 'get' })

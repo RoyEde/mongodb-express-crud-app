@@ -13,6 +13,7 @@ const collection = 'todo';
 
 app.use(express.static('public'));
 
+// read
 app.get('/todos', (req, res) => {
   db.getDB()
     .collection(collection)
@@ -27,11 +28,12 @@ app.get('/todos', (req, res) => {
     });
 });
 
+// edit
 app.put('/:id', (req, res) => {
   const todoID = db.getPrimaryKey(req.params.id);
   const userInput = req.body;
 
-  db.getDB
+  db.getDB()
     .collection(collection)
     .findOneAndUpdate(
       { _id: todoID },
@@ -47,18 +49,25 @@ app.put('/:id', (req, res) => {
     );
 });
 
+// add
 app.post('/', (req, res) => {
   const userInput = req.body;
 
-  db.getDB.collection(collection).insertOne(userInput, (error, result) => {
-    if (error) {
-      console.error(error);
-    } else {
-      res.json({ result, document: result.ops[0] });
-    }
-  });
+  db.getDB()
+    .collection(collection)
+    .insertOne(userInput, (error, result) => {
+      if (error) {
+        console.error(error);
+      } else {
+        console.log(
+          successMessages.added(result.ops[0]._id, 'todo', result.ops[0].todo)
+        );
+        res.json({ result, document: result.ops[0] });
+      }
+    });
 });
 
+// delete
 app.delete('/:id', (req, res) => {
   const todoID = db.getPrimaryKey(req.params.id);
 
