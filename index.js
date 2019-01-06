@@ -11,9 +11,7 @@ const path = require('path');
 const db = require('./db');
 const collection = 'todo';
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
+app.use(express.static('public'));
 
 app.get('/todos', (req, res) => {
   db.getDB()
@@ -59,6 +57,20 @@ app.post('/', (req, res) => {
       res.json({ result, document: result.ops[0] });
     }
   });
+});
+
+app.delete('/:id', (req, res) => {
+  const todoID = db.getPrimaryKey(req.params.id);
+
+  db.getDB()
+    .collection(collection)
+    .findOneAndDelete({ _id: todoID }, (error, result) => {
+      if (error) {
+        console.error(error);
+      } else {
+        res.json(result);
+      }
+    });
 });
 
 const messages = require('./messages');
