@@ -11,9 +11,18 @@
     <main class="container">
       <div class="container__input">
         <form action="" class="container__input__form" id="form">
-          <label for="todoUserInput">TODO:</label>
-          <input type="text" id="todoUserInput" placeholder="TODO" />
-          <button type="submit">Create</button>
+          <label class="container__input__form__label" for="todoUserInput">
+            Todo:
+          </label>
+          <input
+            class="container__input__form__input"
+            type="text"
+            id="todoUserInput"
+            placeholder="Todo"
+          />
+          <button class="container__input__form__button" type="submit">
+            Create
+          </button>
         </form>
       </div>
       <div class="container__list"><ul id="display"></ul></div>
