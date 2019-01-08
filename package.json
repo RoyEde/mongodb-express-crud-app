@@ -1,5 +1,5 @@
 {
-  "name": "mongodb_crud_app",
+  "name": "mongodb_crud_todo_list_app",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",

@@ -1,5 +1,5 @@
 const errorMessages = {
-  unableToConnect: 'Unable to connect to database.'
+  unableToConnect: 'Unable to connect to the database.'
 };
 
 const successMessages = {
