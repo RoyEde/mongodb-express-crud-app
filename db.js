@@ -1,13 +1,7 @@
-const mongoDB = require('mongodb');
+const { MongoClient, ObjectID } = require('mongodb');
+const { mongoDefaultPort, localDBName } = require('./config');
 
-const config = require('./config');
-
-const MongoClient = mongoDB.MongoClient;
-const ObjectID = mongoDB.ObjectID;
-
-const dbname = 'crud_mongodb';
-
-const url = `mongodb://localhost:${config.mongoDefaultPort}`;
+const url = `mongodb://localhost:${mongoDefaultPort}`;
 
 const mongoOptions = {
   useNewUrlParser: true
@@ -28,7 +22,7 @@ const connect = callback => {
         if (error) {
           callback(error);
         } else {
-          state.db = client.db(dbname);
+          state.db = client.db(localDBName);
           callback();
         }
       }
