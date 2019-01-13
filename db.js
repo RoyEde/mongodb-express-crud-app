@@ -1,13 +1,13 @@
 const mongoDB = require('mongodb');
 
-const mongoPort = require('./config').mongoPort;
+const config = require('./config');
 
 const MongoClient = mongoDB.MongoClient;
 const ObjectID = mongoDB.ObjectID;
 
 const dbname = 'crud_mongodb';
 
-const url = `mongodb://localhost:${mongoPort}`;
+const url = `mongodb://localhost:${config.mongoDefaultPort}`;
 
 const mongoOptions = {
   useNewUrlParser: true

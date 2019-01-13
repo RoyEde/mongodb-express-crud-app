@@ -1,6 +1,6 @@
 const config = {
-  nodePort: 3000,
-  mongoPort: 27017 // mongo's default port when you install it
+  nodeDefaultPort: 3000,
+  mongoDefaultPort: 27017 // mongo's default port when you install it
 };
 
-module.exports = { config };
+module.exports = config;
