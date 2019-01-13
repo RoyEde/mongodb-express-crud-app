@@ -1,15 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const config = require('./config');
+
+const db = require('./db');
+const collection = 'todo';
 
 const app = express();
 
 app.use(bodyParser.json());
 
-const port = 3000;
-const path = require('path');
-
-const db = require('./db');
-const collection = 'todo';
+const port =
+  (parseInt(process.argv[2], 10) && process.argv[2]) || config.nodeDefaultPort;
 
 app.use(express.static('public'));
 

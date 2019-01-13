@@ -18,7 +18,7 @@ Whenever you create a todo, it will appear in the list with two additional butto
 
 3. Start your `mongoDB` service (be sure that you're using the port specified in `config.js`).
 
-4. Run the application: `node index.js`. You should see a message in your terminal: Connected to database, app listening on port `<port you specified in config.js>`.
+4. Run the application: `npm start || yarn start`. You can also pass a custom port as your argument: `npm start <port> || yarn start <port>`. You should see a message in your terminal: _Connected to database, app listening on port `<port you specified>`_.
 
 ### \*Prerequisites:
 
@@ -28,7 +28,7 @@ Whenever you create a todo, it will appear in the list with two additional butto
 
 ## Troubleshooting:
 
-If your terminal shows the `Unable to connect to the database.` message, it means that you haven't started `mongoDB` or that your service is **running on a different port** than the one you should be running it with (specified in `config.js`). Ensure yourself that `mongoDB` is running by typing the command `mongod` in your terminal (before running the application).
+If your terminal shows the `Unable to connect to the database.` message, it means that you haven't started `mongoDB` or that your service is **running on a different port** than the one you should be running it with (specified in `config.js`). Ensure yourself that `mongoDB` is running by typing the command `mongo` in your terminal (before running the application).
 
 ---
 
