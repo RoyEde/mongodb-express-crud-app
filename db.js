@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const mongoDB = require('mongodb');
 
 const config = require('./config');
@@ -8,6 +10,7 @@ const ObjectID = mongoDB.ObjectID;
 const dbname = 'crud_mongodb';
 
 const url = `mongodb://localhost:${config.mongoDefaultPort}`;
+const uri = process.env.MONGODB_URI;
 
 const mongoOptions = {
   useNewUrlParser: true
@@ -22,7 +25,7 @@ const connect = callback => {
     callback();
   } else {
     MongoClient.connect(
-      url,
+      uri && process.argv[3] && process.argv[3] === 'connect' ? uri : url,
       mongoOptions,
       (error, client) => {
         if (error) {
