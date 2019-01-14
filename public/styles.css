@@ -8,19 +8,15 @@
 button {
   appearance: none;
   background: transparent;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: 500;
-  margin: 0px 5px 0px 5px;
-  max-width: 160px;
-  min-width: 80px;
-  padding: 8px 12px 8px 12px;
-  text-align: center;
-  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
 }
 
 body {
+  --create-background-color: #007bff;
+  --create-background-color-hover: #0069d9;
+  --edited-background-color-hover: #449d44;
+  --edited-border-color-hover: #398439;
+  --deleted-background-color-hover: #c82333;
+  --deleted-border-color-hover: #bd2130;
   display: flex;
   justify-content: center;
 }
@@ -28,16 +24,79 @@ body {
 .container {
   display: flex;
   flex-direction: column;
+  height: 100%;
   justify-content: center;
   max-width: 768px;
-  padding-left: 5px;
-  padding-right: 5px;
+  padding-left: 4px;
+  padding-right: 4px;
   width: 100%;
 }
 
 .container__input {
-  margin-bottom: 10px;
-  margin-top: 10px;
+  margin-bottom: 8px;
+  margin-top: 8px;
+}
+
+.snackbar {
+  align-items: center;
+  border: 1px solid #000;
+  border-radius: 4px;
+  bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  max-width: 768px;
+  padding: 8px 16px 8px 16px;
+  position: fixed;
+  width: 90%;
+}
+
+.snackbar--created {
+  background-color: var(--create-background-color-hover);
+  border-color: var(--create-background-color-hover);
+}
+
+.snackbar--edited {
+  background-color: var(--edited-background-color-hover);
+  border-color: var(--edited-border-color-hover);
+}
+
+.snackbar--deleted {
+  background-color: var(--deleted-background-color-hover);
+  border-color: var(--deleted-border-color-hover);
+}
+
+.snackbar--show {
+  transform: translateY(0);
+  transition: transform 0.4s cubic-bezier(0, 0, 0.2, 1);
+}
+
+.snackbar--hide {
+  transform: translateY(calc(100% + 8px));
+  transition: transform 0.4s cubic-bezier(0.4, 0, 1, 1);
+}
+
+.snackbar__message {
+  color: #fff;
+  max-width: 90%;
+}
+
+.snackbar__button {
+  align-items: center;
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  font-size: 1rem;
+  font-weight: 500;
+  height: 40px;
+  justify-content: center;
+  outline: none;
+  width: 40px;
+}
+
+.snackbar__button:hover {
+  background-color: #00000022;
 }
 
 .container__input__form__label {
@@ -58,15 +117,28 @@ body {
   width: 768px;
 }
 
+.container__input__form__button,
+.container__list__item__buttons__button {
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0px 4px 0px 4px;
+  width: 96px;
+  padding: 8px 16px 8px 16px;
+  text-align: center;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
 .container__input__form__button {
-  background-color: #007bff;
-  border: 1px solid #007bff;
+  background-color: var(--create-background-color);
+  border: 1px solid var(--create-background-color);
   color: #fff;
 }
 
 .container__input__form__button:hover {
-  background-color: #0069d9;
-  border: 1px solid #0069d9;
+  background-color: var(--create-background-color-hover);
+  border: 1px solid var(--create-background-color-hover);
 }
 
 .container__list__item:first-child {
@@ -89,7 +161,13 @@ body {
 }
 
 .container__list__item__text {
+  align-items: center;
   font-size: 1rem;
+  display: flex;
+  padding-bottom: 8px;
+  padding-left: 8px;
+  padding-top: 8px;
+  width: 100%;
 }
 
 .container__list__item__buttons {
@@ -105,8 +183,18 @@ body {
 
 .container__list__item__buttons__button--edit:hover {
   background-color: #e2e6ea;
-  border: 1px solid #dae0e5;
-  color: #212529;
+  border-color: #dae0e5;
+}
+
+.container__list__item__buttons__button--editing {
+  background-color: #5cb85c;
+  border: 1px solid #4cae4c;
+  color: #fff;
+}
+
+.container__list__item__buttons__button--editing:hover {
+  background-color: var(--edited-background-color-hover);
+  border-color: var(--edited-border-color-hover);
 }
 
 .container__list__item__buttons__button--delete {
@@ -116,6 +204,6 @@ body {
 }
 
 .container__list__item__buttons__button--delete:hover {
-  background-color: #c82333;
-  border: 1px solid #bd2130;
+  background-color: var(--deleted-background-color-hover);
+  border-color: var(--deleted-border-color-hover);
 }
