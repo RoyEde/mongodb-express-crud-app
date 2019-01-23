@@ -122,6 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 deleteTodo(newTodo, listItemID, deleteID);
               }
             } else {
+              document.getElementById(`${todoID}`).textContent = todo.todo;
               showSnackbar(data.error.message);
             }
           });

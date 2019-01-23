@@ -28,9 +28,12 @@ const requestPut = (req, res) => {
 
   Joi.validate(userInput, schema, (error, result) => {
     if (error) {
-      const inputError = new Error(errorMessages.invalidInput);
-      inputError.status = 400;
-      next(inputError);
+      res.json({
+        status: 400,
+        error: {
+          message: errorMessages.invalidInput
+        }
+      });
     } else {
       getDB()
         .collection(collection)
