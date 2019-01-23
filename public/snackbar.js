@@ -8,6 +8,8 @@ let showSnackbar;
   const snackbarButton = document.getElementById('snackbar-button');
   const snackbarMessage = document.getElementById('snackbar-message');
   const snackbarClassPrefix = tail => `snackbar${tail}`;
+  const snackbarMessageClassPrefix = tail =>
+    snackbarClassPrefix(`__message${tail}`);
 
   const handleHide = () => {
     snackbar.className = snackbar.className.replace(
@@ -33,7 +35,7 @@ let showSnackbar;
   };
 
   // Expose showSnackbar function
-  showSnackbar = (message, type = 'deleted', time = 4000) => {
+  showSnackbar = (message, type = 'error', time = 4000) => {
     clearTimeout(messageTimeout);
     if (snackbar.className.includes(snackbarClassPrefix('--show'))) {
       clearTimeout(snackbarHideTimeOut);

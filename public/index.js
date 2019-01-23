@@ -23,6 +23,13 @@ const METHODS = {
   })
 };
 
+const buttonFactory = (className, id) => {
+  const button = document.createElement('button');
+  button.className = className;
+  button.id = id;
+  return button;
+};
+
 const resetInput = input => (input.value = '');
 
 const buildIDS = todo => ({
@@ -47,19 +54,19 @@ const buildTemplate = (todo, ids) => {
   const buttonsContainer = document.createElement('div');
   buttonsContainer.className = classPrefix('__buttons');
 
-  const editButton = document.createElement('button');
-  editButton.className = `${classPrefix('__buttons__button')} ${classPrefix(
-    '__buttons__button--edit'
-  )}`;
-  editButton.id = ids.editID;
-  editButton.textContent = 'Edit';
+  const editButton = buttonFactory(
+    `${classPrefix('__buttons__button')} ${classPrefix(
+      '__buttons__button--edit'
+    )}`,
+    ids.editID
+  );
 
-  const deleteButton = document.createElement('button');
-  deleteButton.id = ids.deleteID;
-  deleteButton.className = `${classPrefix('__buttons__button')} ${classPrefix(
-    '__buttons__button--delete'
-  )}`;
-  deleteButton.textContent = 'Delete';
+  const deleteButton = buttonFactory(
+    `${classPrefix('__buttons__button')} ${classPrefix(
+      '__buttons__button--delete'
+    )}`,
+    ids.deleteID
+  );
 
   buttonsContainer.append(editButton, deleteButton);
 
@@ -77,12 +84,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const deleteTodo = (todo, listItemID, deleteID) => {
     document.getElementById(`${deleteID}`).onclick = () =>
+      confirm(`Delete { _id: ${todo._id}, todo: ${todo.todo} }?`) &&
       fetch(`/${todo._id}`, METHODS.delete)
         .then(parseResponse)
         .then(data => {
-          if (data.ok === 1) {
-            document.getElementById(`${listItemID}`).remove();
-            showSnackbar(`Deleted: ${todo.todo}`, 'deleted');
+          if (!data.error) {
+            if (data.result.ok === 1) {
+              document.getElementById(`${listItemID}`).remove();
+              showSnackbar(data.message, 'log');
+            }
+          } else {
+            showSnackbar(data.error.message);
           }
         });
   };
@@ -97,19 +109,23 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch(`/${todo._id}`, METHODS.edit(todoItem))
           .then(parseResponse)
           .then(data => {
-            if (data.ok === 1) {
-              document.getElementById(`${todoID}`).textContent =
-                data.value.todo;
-              showSnackbar(
-                `Updated from: ${todo.todo} to: ${data.value.todo}`,
-                'edited'
-              );
-              const { listItemID, deleteID } = buildIDS(data.value);
-              deleteTodo(data.value, listItemID, deleteID);
+            if (!data.error) {
+              if (data.result.ok === 1) {
+                document.getElementById(`${todoID}`).textContent =
+                  data.result.updated;
+                showSnackbar(data.message, 'log');
+                const newTodo = {
+                  _id: data.result.value._id,
+                  todo: data.updated
+                };
+                const { listItemID, deleteID } = buildIDS(newTodo);
+                deleteTodo(newTodo, listItemID, deleteID);
+              }
+            } else {
+              showSnackbar(data.error.message);
             }
           });
       }
-      editButton.textContent = 'Edit';
       editButton.className = `${classPrefix('')} ${classPrefix('--edit')}`;
       todoItem.contentEditable = false;
       editingTodo(todo, todoID, editID);
@@ -122,7 +138,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     editButton.onclick = () => {
       const todoItem = document.getElementById(`${todoID}`);
-      editButton.textContent = 'Confirm';
       editButton.className = `${classPrefix('')} ${classPrefix('--editing')}`;
       todoItem.contentEditable = true;
       todoItem.focus();
@@ -152,9 +167,13 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch('/', METHODS.add(todoUserInput))
       .then(parseResponse)
       .then(data => {
-        if (data.result.ok === 1 && data.result.n === 1) {
-          buildTodo(data.document);
-          showSnackbar(`Added: ${todoUserInput.value}`, 'created');
+        if (!data.error) {
+          if (data.result.ok === 1 && data.result.n === 1) {
+            buildTodo(data.document);
+            showSnackbar(data.message, 'info');
+          }
+        } else {
+          showSnackbar(data.error.message, 'error');
         }
         resetInput(todoUserInput);
       });
