@@ -1,5 +1,5 @@
-const successTemplate = (id, elementKey, elementValue, message) =>
-  `${message}: { _id: ${id}, ${elementKey}: '${elementValue}' }`;
+const successTemplate = (elementKey, elementValue, message) =>
+  `${message} ${elementKey}: '${elementValue}'`;
 
 const errorTemplate = type => `Failed to ${type} Todo Document`;
 
@@ -18,7 +18,7 @@ const successMessages = {
   connected: port => `Connected to database, app listening on port ${port}`,
   inserted: (...args) => successTemplate(...args, 'Inserted'),
   edited: (...args) => successTemplate(...args),
-  deleted: (id, elementKey) => `Deleted ${elementKey} with id: ${id}`
+  deleted: elementKey => `Deleted ${elementKey}`
 };
 
 module.exports = { errorMessages, successMessages };

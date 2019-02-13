@@ -50,7 +50,6 @@ const requestPut = (req, res) => {
             } else {
               console.log(
                 successMessages.edited(
-                  todoID,
                   'todo',
                   userInput.todo,
                   `Todo: ${result.value.todo} was updated to`
@@ -62,7 +61,6 @@ const requestPut = (req, res) => {
                   updated: userInput.todo
                 },
                 message: successMessages.edited(
-                  todoID,
                   'todo',
                   userInput.todo,
                   `Todo: ${result.value.todo} was updated to`
@@ -93,22 +91,12 @@ const requestPost = (req, res, next) => {
             dbError.status = 400;
             next(dbError);
           } else {
-            console.log(
-              successMessages.inserted(
-                result.ops[0]._id,
-                'todo',
-                result.ops[0].todo
-              )
-            );
+            console.log(successMessages.inserted('todo', result.ops[0].todo));
             res.status = 200;
             res.json({
               result,
               document: result.ops[0],
-              message: successMessages.inserted(
-                result.ops[0]._id,
-                'todo',
-                result.ops[0].todo
-              ),
+              message: successMessages.inserted('todo', result.ops[0].todo),
               error: null
             });
           }
@@ -127,10 +115,10 @@ const requestDelete = (req, res) => {
         console.error(error);
         next(error);
       } else {
-        console.log(successMessages.deleted(todoID, 'todo'));
+        console.log(successMessages.deleted('todo'));
         res.json({
           result,
-          message: successMessages.deleted(todoID, 'todo')
+          message: successMessages.deleted('todo')
         });
       }
     });

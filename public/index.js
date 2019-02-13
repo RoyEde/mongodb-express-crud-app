@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const deleteTodo = (todo, listItemID, deleteID) => {
     document.getElementById(`${deleteID}`).onclick = () =>
-      confirm(`Delete { _id: ${todo._id}, todo: ${todo.todo} }?`) &&
+      confirm(`Delete todo: ${todo.todo}?`) &&
       fetch(`/${todo._id}`, METHODS.delete)
         .then(parseResponse)
         .then(data => {
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 showSnackbar(data.message, 'log');
                 const newTodo = {
                   _id: data.result.value._id,
-                  todo: data.updated
+                  todo: data.result.updated
                 };
                 const { listItemID, deleteID } = buildIDS(newTodo);
                 deleteTodo(newTodo, listItemID, deleteID);
